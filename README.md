@@ -1,7 +1,7 @@
 # GitAsMaven
 Gradle script to use Git as a private Maven repository.
 
-Currently only BitBucket is supported (because of their free private repositories), but can be easily extended to also support GitHub.
+Currently only BitBucket is supported, as the offer free private repositories. GitHub support easily be added in a similar script.
 
 Please find more details in [this blogpost](http://jeroenmols.com/blog/2016/02/05/wagongit/) and a full example in [this repository](https://github.com/JeroenMols/WagonGitExample).
 
