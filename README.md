@@ -27,7 +27,7 @@ BitBucket repository with a `releases` as its main branch, as described in [this
   REPOSITORY_NAME=<bitbucket_reponame_here>
   ```
 
-3. Create a `gradle.properties]` file in the root of your project (or better in the global `.gradle` folder on your system) with the following parameters
+3. Create a `gradle.properties` file in the root of your project (or better in the global `.gradle` folder on your system) with the following parameters
 
   ```groovy
   USERNAME=<username_here>
