@@ -3,16 +3,16 @@ Gradle script to use Git as a private Maven repository.
 
 Currently only BitBucket is supported (because of their free private repositories), but can be easily extended to also support GitHub.
 
-Please find more details in [this blogpost](http://jeroenmols.com/blog/2016/02/05/wagongit/).
+Please find more details in [this blogpost](http://jeroenmols.com/blog/2016/02/05/wagongit/) and a full example in [this repository](https://github.com/JeroenMols/WagonGitExample).
 
 ## Prerequisites
-BitBucket repository with a `releases` as its main branch. Learn how to configure one in [this blogpost](http://jeroenmols.com/blog/2016/02/05/wagongit/).
+BitBucket repository with a `releases` as its main branch, as described in [this blogpost](http://jeroenmols.com/blog/2016/02/05/wagongit/).
 
 ## Usage
 1. Add the following plugin to the top of the `build.gradle` file in your library folder
 
   ```groovy
-  apply from: 'publish-bitbucket.gradle'
+  apply from: 'https://raw.githubusercontent.com/JeroenMols/GitAsMaven/master/publish-bitbucket.gradle'
   ```
 
 2. Create a `gradle.properties` file within your library folder with the following parameters:
