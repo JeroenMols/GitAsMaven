@@ -1,0 +1,99 @@
+apply plugin: 'maven'
+
+repositories {
+    maven { url "https://raw.github.com/synergian/wagon-git/releases" }
+}
+
+configurations {
+    deployLibrary
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    deployLibrary "ar.com.synergian:wagon-git:0.2.0"
+}
+
+task androidJavadocs(type: Javadoc) {
+    failOnError false
+    source = android.sourceSets.main.java.sourceFiles
+}
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.sourceFiles
+}
+
+task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+    classifier = 'javadoc'
+    from androidJavadocs.destinationDir
+}
+
+artifacts {
+    archives androidSourcesJar
+    archives androidJavadocsJar
+}
+
+task lookForArtifacts {
+    doLast {
+        def artifactName = ARTIFACT_NAME + '-' + ARTIFACT_VERSION + '.aar'
+        def artifactPath = ARTIFACT_PACKAGE.replace(".", "/") + "/" + ARTIFACT_NAME + "/" + ARTIFACT_VERSION + "/" + artifactName
+        def repositoryUrl = 'https://api.bitbucket.org/1.0/repositories/' + COMPANY + '/' + REPOSITORY_NAME + '/raw/releases/' + artifactPath
+
+        println("")
+        println("Checking if artifact already exists: " + artifactName)
+        println("at URL: " + repositoryUrl)
+
+        def artifactExists = urlExists(repositoryUrl)
+        println(artifactExists ? "existing artifact found" : "no existing artifact found")
+        println("")
+
+        if (urlExists(repositoryUrl)) {
+            throw new RuntimeException("Artifact with version " + ARTIFACT_VERSION + " already exist - not executing uploadArchives")
+        }
+        return true
+    }
+}
+
+uploadArchives.dependsOn lookForArtifacts
+
+uploadArchives {
+
+    repositories.mavenDeployer {
+        configuration = configurations.deployLibrary
+        repository(url: 'git:releases://git@bitbucket.org:' + COMPANY + '/' + REPOSITORY_NAME + '.git')
+
+        uniqueVersion = true
+
+        pom.project {
+            groupId = ARTIFACT_PACKAGE
+            version = ARTIFACT_VERSION
+            artifactId = ARTIFACT_NAME
+            packaging ARTIFACT_PACKAGING
+        }
+    }
+}
+
+def urlExists(String repositoryUrl) {
+
+    try {
+        def connection = (HttpURLConnection) new URL(repositoryUrl).openConnection()
+
+        connection.setRequestProperty("Authorization", "Basic " + getBase64EncodedCredentials())
+        connection.setConnectTimeout(10000)
+        connection.setReadTimeout(10000)
+        connection.setRequestMethod("HEAD")
+
+        def responseCode = connection.getResponseCode()
+        println("responseCode: " + responseCode)
+
+        return (200 == responseCode)
+    } catch (IOException ignored) {
+        return false
+    }
+}
+
+def getBase64EncodedCredentials() {
+    def s = USERNAME + ":" + PASSWORD;
+    return s.bytes.encodeBase64().toString()
+}
