@@ -88,7 +88,7 @@ def urlExists(String repositoryUrl) {
           throw new RuntimeException("Unauthorized BitBucket user - please provide valid username and password in gradle.properties file")
         }
 
-        return (200 == responseCode || 404 == responseCode)
+        return (200 == responseCode)
     } catch (IOException ignored) {
         return false
     }
