@@ -11,7 +11,7 @@ configurations {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    deployLibrary "ar.com.synergian:wagon-git:0.2.0"
+    deployLibrary "ar.com.synergian:wagon-git:0.2.5"
 }
 
 task androidJavadocs(type: Javadoc) {
@@ -38,7 +38,7 @@ task lookForArtifacts {
     doLast {
         def artifactName = ARTIFACT_NAME + '-' + ARTIFACT_VERSION + '.aar'
         def artifactPath = ARTIFACT_PACKAGE.replace(".", "/") + "/" + ARTIFACT_NAME + "/" + ARTIFACT_VERSION + "/" + artifactName
-        def repositoryUrl = 'https://api.bitbucket.org/1.0/repositories/' + COMPANY + '/' + REPOSITORY_NAME + '/raw/releases/' + artifactPath
+        def repositoryUrl = 'https://api.bitbucket.org/2.0/repositories/' + COMPANY + '/' + REPOSITORY_NAME + '/raw/releases/' + artifactPath
 
         println("")
         println("Checking if artifact already exists: " + artifactName)
@@ -62,9 +62,6 @@ uploadArchives {
     repositories.mavenDeployer {
         configuration = configurations.deployLibrary
         repository(url: 'git:releases://git@bitbucket.org:' + COMPANY + '/' + REPOSITORY_NAME + '.git')
-
-        uniqueVersion = true
-
         pom.project {
             groupId = ARTIFACT_PACKAGE
             version = ARTIFACT_VERSION
