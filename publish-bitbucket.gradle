@@ -38,7 +38,7 @@ task lookForArtifacts {
     doLast {
         def artifactName = ARTIFACT_NAME + '-' + ARTIFACT_VERSION + '.aar'
         def artifactPath = ARTIFACT_PACKAGE.replace(".", "/") + "/" + ARTIFACT_NAME + "/" + ARTIFACT_VERSION + "/" + artifactName
-        def repositoryUrl = 'https://api.bitbucket.org/2.0/repositories/' + COMPANY + '/' + REPOSITORY_NAME + '/raw/releases/' + artifactPath
+        def repositoryUrl = 'https://api.bitbucket.org/2.0/repositories/' + COMPANY + '/' + REPOSITORY_NAME + '/src/releases/' + artifactPath
 
         println("")
         println("Checking if artifact already exists: " + artifactName)

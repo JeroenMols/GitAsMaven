@@ -36,7 +36,7 @@ BitBucket repository with a `releases` as its main branch, as described in [this
   
   Note: Do not check this file into version control! 
   
-  Check [this blogpost](http://localhost:4000/blog/2015/08/13/artifactory2/) password to securely provide your username and password.
+  Check [this blogpost](https://jeroenmols.com/blog/2015/08/13/artifactory2/) password to securely provide your username and password.
 
 4. Run the following command to upload a version to your Maven repository.
 
